@@ -87,22 +87,144 @@ echo "<!-- DEBUG: Fetched firstname: " . htmlspecialchars($firstname) . " -->";
 			}
 
 			.close-btn {
-				position: absolute;
-				top: 15px;
-				right: 15px;
-				background: rgba(0, 0, 0, 0.8);
-				color: white;
+				position: fixed;
+				top: 20px;
+				right: 20px;
+				background: transparent;
+				color: black;
 				border: none;
 				border-radius: 50%;
-				width: 30px;
-				height: 30px;
-				font-size: 18px;
+				width: 32px;
+				height: 32px;
+				font-size: 20px;
 				cursor: pointer;
 				z-index: 10001;
 				display: flex;
 				align-items: center;
 				justify-content: center;
 				font-weight: bold;
+				box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+				transition: all 0.2s ease;
+			}
+
+			/* Enhanced responsive design for smaller screens */
+			@media (max-width: 1024px) {
+				.popup-overlay {
+					padding: 15px;
+				}
+
+				.popup-content {
+					width: 95%;
+					max-width: 350px;
+					max-height: 80vh;
+				}
+
+				.close-btn {
+					top: 18px;
+					right: 18px;
+					width: 30px;
+					height: 30px;
+					font-size: 19px;
+					box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+				}
+			}
+
+			@media (max-width: 768px) {
+				.popup-overlay {
+					padding: 10px;
+				}
+
+				.popup-content {
+					width: 98%;
+					max-width: 320px;
+					max-height: 75vh;
+					border-radius: 15px;
+				}
+
+				.popup-image {
+					border-radius: 15px;
+				}
+
+				.close-btn {
+					top: 15px;
+					right: 15px;
+					width: 28px;
+					height: 28px;
+					font-size: 18px;
+					box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+					border: 1px solid rgba(0, 0, 0, 0.1);
+				}
+
+				.close-btn:hover {
+					transform: scale(1.15);
+					box-shadow: 0 3px 10px rgba(0, 0, 0, 0.25);
+				}
+			}
+
+			@media (max-width: 480px) {
+				.popup-overlay {
+					padding: 8px;
+				}
+
+				.popup-content {
+					width: 100%;
+					max-width: 280px;
+					max-height: 70vh;
+					border-radius: 12px;
+				}
+
+				.popup-image {
+					border-radius: 12px;
+				}
+
+				.close-btn {
+					top: 12px;
+					right: 12px;
+					width: 26px;
+					height: 26px;
+					font-size: 16px;
+					box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+					border: 1px solid rgba(0, 0, 0, 0.1);
+				}
+
+				.close-btn:hover {
+					transform: scale(1.2);
+					box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+				}
+			}
+
+			@media (max-width: 360px) {
+				.popup-overlay {
+					padding: 5px;
+				}
+
+				.popup-content {
+					max-width: 260px;
+					max-height: 65vh;
+					border-radius: 10px;
+				}
+
+				.popup-image {
+					border-radius: 10px;
+				}
+
+				.close-btn {
+					top: 10px;
+					right: 10px;
+					width: 24px;
+					height: 24px;
+					font-size: 15px;
+					box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+				}
+
+				.close-btn:hover {
+					transform: scale(1.25);
+					box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+				}
+			}
+
+			.close-btn:hover {
+				transform: scale(1.1);
 			}
 
 			/* Animation for popup appearance */
@@ -267,8 +389,7 @@ echo "<!-- DEBUG: Fetched firstname: " . htmlspecialchars($firstname) . " -->";
 
 		<!-- Image-based Popup Ad -->
 		<div id="greenPointsPopup" class="popup-overlay" style="display: none;">
-			<div class="popup-content">
-				<button class="close-btn" onclick="closeGreenPointsPopup()">×</button>
+			<div class="popup-content" onclick="event.stopPropagation();">
 				<img src="images/pop-up.png" alt="Cephra Rewards Popup" class="popup-image" />
 			</div>
 		</div>
@@ -309,7 +430,15 @@ echo "<!-- DEBUG: Fetched firstname: " . htmlspecialchars($firstname) . " -->";
 
                 // Function to show Green Points popup
                 function showGreenPointsPopup() {
-                    document.getElementById('greenPointsPopup').style.display = 'flex';
+                    const popup = document.getElementById('greenPointsPopup');
+                    popup.style.display = 'flex';
+
+                    // Add click event listener to close popup when clicking outside
+                    popup.onclick = function(e) {
+                        if (e.target === popup) {
+                            closeGreenPointsPopup();
+                        }
+                    };
                 }
 
                 // Function to close Green Points popup
